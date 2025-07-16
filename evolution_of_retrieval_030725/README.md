@@ -42,13 +42,6 @@ evolution_of_retrieval_030725/
   - Formato: CSV con domande e URL di riferimento
   - Dimensione: ~2,677 domande
 
-### Output Attesi
-- **Metriche di valutazione** per ogni metodo:
-  - **Recall@k**: Frazione di query con almeno una risposta corretta nei top-k risultati
-  - **MRR (Mean Reciprocal Rank)**: Media dei ranghi reciproci delle risposte corrette
-  - **Precision@k**: Frazione di documenti recuperati che sono corretti
-  - **Tempo di query**: Tempo medio per elaborare una query
-
 ## 🚀 Installazione e Setup
 
 ### Prerequisiti
@@ -84,12 +77,7 @@ nltk.download("stopwords")
 | BM25       | 0.570     | 0.439   | Baseline         | 10.0     |
 | FastText   | 0.263     | 0.210   | – 0.307          | 4.2      |
 | SBERT      | 0.511     | 0.403   | – 0.059          | 19.2     |
-| **BGE-M3** | **0.854** | **0.713** | **+0.284**      | 84.6     |
-
-### Osservazioni Chiave
-- **BGE-M3** mostra un miglioramento significativo (+28.4% in Recall@10)
-- I metodi classici (TF-IDF, BM25) sono più veloci ma meno accurati
-- Gli embedding contestuali moderni offrono il miglior trade-off precisione/velocità
+| **BGE-M3** | **0.854** | **0.713** | **+0.284**      | 84.6     |à
 
 ## 🔧 Utilizzo
 
@@ -135,91 +123,6 @@ scores = eval_retriever(my_retriever, df_q_sc, k=10)
 print(f"Recall@10: {scores['recall@k']:.3f}")
 print(f"MRR: {scores['mrr']:.3f}")
 ```
-
-## 🎯 Funzionalità Principali
-
-### 1. Preprocessing del Testo
-- Tokenizzazione con NLTK
-- Rimozione stopwords italiane
-- Normalizzazione (lowercase, rimozione caratteri non alfabetici)
-
-### 2. Metodi di Retrieval Implementati
-
-#### TF-IDF
-- Vettorizzazione con scikit-learn
-- Similarità coseno
-- Normalizzazione L2
-
-#### BM25
-- Implementazione con rank-bm25
-- Parametri ottimizzati per il dataset
-
-#### FastText
-- Embeddings pre-addestrati
-- Similarità coseno su vettori medi
-
-#### Sentence-BERT
-- Modello `sentence-transformers/all-MiniLM-L6-v2`
-- Embeddings contestuali per frasi
-
-#### BGE-M3
-- Modello multilingue avanzato
-- Embedding Matryoshka per compressione
-- Indicizzazione FAISS per ricerca veloce
-
-### 3. Sistema RAG Completo
-- Retrieval con BGE-M3
-- Reranking con FlagReranker
-- Generazione risposte con GPT-4
-
-## 📊 Metriche di Valutazione
-
-### Recall@k
-Frazione di query dove almeno una risposta corretta appare nei top-k risultati.
-
-### Mean Reciprocal Rank (MRR)
-Media dei ranghi reciproci delle prime risposte corrette. Formula:
-```
-MRR = (1/rank_1 + 1/rank_2 + ... + 1/rank_n) / n
-```
-
-### Precision@k
-Frazione di documenti recuperati che sono effettivamente corretti.
-
-## 🔍 Analisi dei Risultati
-
-### Vantaggi dei Metodi Moderni
-1. **Capacità semantica**: Comprensione del significato oltre le parole esatte
-2. **Robustezza multilingue**: BGE-M3 gestisce bene lingue minoritarie come il sardo
-3. **Scalabilità**: Indicizzazione FAISS per grandi corpus
-
-### Trade-off Prestazioni
-- **Velocità**: TF-IDF/BM25 > FastText > SBERT > BGE-M3
-- **Accuratezza**: BGE-M3 > SBERT > BM25 > TF-IDF > FastText
-
-## 🛠️ Personalizzazione
-
-### Aggiungere un Nuovo Metodo
-1. Implementa la funzione di retrieval
-2. Aggiungi la valutazione nel notebook
-3. Confronta con i metodi esistenti
-
-### Modificare i Parametri
-- **BM25**: Parametri `k1` e `b`
-- **BGE-M3**: Dimensioni embedding, batch size
-- **FAISS**: Numero di probe per la ricerca
-
-## 📝 Note Tecniche
-
-### Requisiti Hardware
-- **CPU**: Minimo 4 core per preprocessing
-- **RAM**: 8GB+ per dataset completo
-- **GPU**: NVIDIA GPU con 8GB+ VRAM per BGE-M3
-
-### Ottimizzazioni
-- Indicizzazione FAISS per ricerca veloce
-- Batch processing per embedding
-- Caching dei risultati intermedi
 
 ## 🤝 Contributi
 
